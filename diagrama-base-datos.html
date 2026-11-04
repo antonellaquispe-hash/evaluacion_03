@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagrama de bases de datos | Laboratorio 16</title>
+<style>
+:root{color-scheme:light;--ink:#14253d;--muted:#61738a;--line:#dce5ef;--paper:#f4f7fb;--blue:#1769aa;--blue-soft:#e9f3fc;--violet:#7156b8;--violet-soft:#f1edfa;--teal:#0c8076;--teal-soft:#e7f6f3;--amber:#9a5a0b;--amber-soft:#fff4df}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);padding:36px 22px 48px}.page{max-width:1250px;margin:auto}.eyebrow{color:var(--blue);font-weight:750;letter-spacing:.12em;text-transform:uppercase;font-size:12px}.title{font-size:clamp(28px,4vw,42px);margin:10px 0 8px;letter-spacing:-.035em}.subtitle{color:var(--muted);font-size:16px;line-height:1.6;max-width:850px;margin:0}.legend{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 18px}.pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:#455870;font-size:13px}.key{display:inline-grid;place-items:center;border-radius:5px;min-width:28px;height:21px;font-size:10px;font-weight:800}.key.pk{background:var(--blue-soft);color:var(--blue)}.key.fk{background:var(--amber-soft);color:var(--amber)}.diagram{position:relative;display:grid;grid-template-columns:minmax(250px,1fr) minmax(310px,1.12fr) minmax(250px,1fr);gap:28px;align-items:center;padding:32px 24px;background:linear-gradient(140deg,#fff,#f9fbfe);border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 38px #243f5a12;overflow:hidden}.entity{position:relative;z-index:1;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 8px 24px #20395510;transition:transform .18s ease,box-shadow .18s ease}.entity:hover{transform:translateY(-3px);box-shadow:0 14px 30px #20395520}.entity-head{padding:18px 19px 16px;border-bottom:1px solid var(--line)}.event .entity-head{background:var(--blue-soft)}.attendee .entity-head{background:var(--violet-soft)}.registration .entity-head{background:var(--teal-soft)}.service{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}h2{font-size:20px;margin:5px 0 3px;letter-spacing:-.02em}.database{font:12px Consolas,"Courier New",monospace;color:var(--muted)}.rows{padding:7px 17px 13px}.row{display:grid;grid-template-columns:minmax(110px,1fr) auto;gap:12px;align-items:center;padding:10px 2px;border-bottom:1px solid #edf1f5;font-size:13px}.row:last-child{border-bottom:0}.field{font-family:Consolas,"Courier New",monospace;font-weight:700;color:#273a52}.type{color:#718198;font-family:Consolas,"Courier New",monospace;font-size:11px;text-align:right}.badges{display:flex;gap:5px;margin-left:6px}.row-main{display:flex;align-items:center;flex-wrap:wrap}.tag{border-radius:4px;padding:3px 5px;font:800 9px "Segoe UI",Arial,sans-serif;letter-spacing:.05em}.tag.pk{background:var(--blue-soft);color:var(--blue)}.tag.fk{background:var(--amber-soft);color:var(--amber)}.tag.uq{background:var(--violet-soft);color:var(--violet)}.relations{display:grid;gap:10px;margin:13px 17px 16px}.relation{font-size:11px;line-height:1.45;background:#fbf8f1;border:1px dashed #d6a85d;color:#76511a;border-radius:8px;padding:8px 9px}.relation b{font-family:Consolas,"Courier New",monospace}.connection{position:absolute;z-index:0;left:0;top:0;width:100%;height:100%;pointer-events:none}.connection path{fill:none;stroke:#d49a3d;stroke-width:2.2;stroke-dasharray:7 7;opacity:.76}.connection text{font:700 11px "Segoe UI",Arial,sans-serif;fill:#8a641f}.note{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:start;margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;color:#50627a;font-size:14px;line-height:1.6}.note-icon{width:28px;height:28px;display:grid;place-items:center;background:var(--amber-soft);color:var(--amber);border-radius:50%;font-weight:900}.note strong{color:var(--ink)}.foot{margin-top:15px;font-size:12px;color:#8492a4;text-align:right}
+@media(max-width:850px){body{padding:24px 14px}.diagram{grid-template-columns:1fr;gap:17px;padding:18px}.connection{display:none}.entity{max-width:560px;width:100%;margin:auto}.foot{text-align:left}}
+@media print{body{background:white;padding:0}.diagram{box-shadow:none}.entity:hover{transform:none}.page{max-width:none}}
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="eyebrow">Laboratorio 16 · Gestión de eventos</div>
+  <h1 class="title">Diagrama de bases de datos</h1>
+  <p class="subtitle">Cada microservicio conserva sus propios datos en MySQL. Inscripción guarda los identificadores del evento y del asistente y consulta esos servicios para validar las referencias.</p>
+  <div class="legend" aria-label="Leyenda">
+    <span class="pill"><span class="key pk">PK</span> Clave primaria</span>
+    <span class="pill"><span class="key fk">REF</span> Referencia lógica entre servicios</span>
+    <span class="pill"><span class="key" style="background:var(--violet-soft);color:var(--violet)">UQ</span> Valor único</span>
+  </div>
+  <section class="diagram" aria-label="Esquema de las tres bases de datos">
+    <svg class="connection" viewBox="0 0 1200 650" preserveAspectRatio="none" aria-hidden="true">
+      <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d49a3d"/></marker></defs>
+      <path d="M492 282 C445 255 400 255 355 282" marker-end="url(#arrow)"/><text x="398" y="238">REST · evento</text>
+      <path d="M708 365 C755 398 800 398 845 365" marker-end="url(#arrow)"/><text x="735" y="424">REST · asistente</text>
+    </svg>
+    <article class="entity event">
+      <header class="entity-head"><div class="service">event-service · :8081</div><h2>Evento</h2><div class="database">bd_evento · eventos</div></header>
+      <div class="rows">
+        <div class="row"><span class="row-main"><span class="field">id</span><span class="badges"><span class="tag pk">PK</span></span></span><span class="type">BIGINT</span></div>
+        <div class="row"><span class="field">nombre</span><span class="type">VARCHAR(120) NOT NULL</span></div>
+        <div class="row"><span class="field">lugar</span><span class="type">VARCHAR(180) NOT NULL</span></div>
+        <div class="row"><span class="field">fecha</span><span class="type">DATETIME NOT NULL</span></div>
+        <div class="row"><span class="field">capacidad</span><span class="type">INT NOT NULL · &gt; 0</span></div>
+        <div class="row"><span class="field">estado</span><span class="type">VARCHAR(20) NOT NULL</span></div>
+      </div>
+    </article>
+    <article class="entity registration">
+      <header class="entity-head"><div class="service">registration-service · :8083</div><h2>Inscripcion</h2><div class="database">bd_inscripcion · inscripciones</div></header>
+      <div class="rows">
+        <div class="row"><span class="row-main"><span class="field">id</span><span class="badges"><span class="tag pk">PK</span></span></span><span class="type">BIGINT</span></div>
+        <div class="row"><span class="row-main"><span class="field">id_evento</span><span class="badges"><span class="tag fk">REF</span></span></span><span class="type">BIGINT NOT NULL</span></div>
+        <div class="row"><span class="row-main"><span class="field">id_asistente</span><span class="badges"><span class="tag fk">REF</span></span></span><span class="type">BIGINT NOT NULL</span></div>
+        <div class="row"><span class="field">fecha</span><span class="type">DATETIME NOT NULL</span></div>
+        <div class="row"><span class="field">estado</span><span class="type">VARCHAR(20) NOT NULL</span></div>
+      </div>
+      <div class="relations"><div class="relation"><b>(id_evento, id_asistente)</b> es único: evita inscripciones duplicadas.</div></div>
+    </article>
+    <article class="entity attendee">
+      <header class="entity-head"><div class="service">attendee-service · :8082</div><h2>Asistente</h2><div class="database">bd_asistente · asistentes</div></header>
+      <div class="rows">
+        <div class="row"><span class="row-main"><span class="field">id</span><span class="badges"><span class="tag pk">PK</span></span></span><span class="type">BIGINT</span></div>
+        <div class="row"><span class="field">nombres</span><span class="type">VARCHAR(120) NOT NULL</span></div>
+        <div class="row"><span class="row-main"><span class="field">correo</span><span class="badges"><span class="tag uq">UQ</span></span></span><span class="type">VARCHAR(160) NOT NULL</span></div>
+        <div class="row"><span class="field">telefono</span><span class="type">VARCHAR(30)</span></div>
+      </div>
+    </article>
+  </section>
+  <aside class="note"><span class="note-icon">!</span><div><strong>Importante:</strong> las etiquetas REF representan referencias lógicas; no son claves foráneas MySQL porque cada servicio tiene una base de datos separada. Al crear una inscripción, <code>registration-service</code> consulta Evento y Asistente por REST. El servicio también verifica que el evento esté activo y que no se haya alcanzado su capacidad.</div></aside>
+  <div class="foot">Modelo basado en las entidades JPA del proyecto · MySQL/XAMPP</div>
+</main>
+</body>
+</html>
