@@ -1,0 +1,12 @@
+﻿services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_laboratorio16:/var/lib/mysql
+      - ./sql/crear_bases.sql:/docker-entrypoint-initdb.d/crear_bases.sql:ro
+volumes:
+  mysql_laboratorio16:

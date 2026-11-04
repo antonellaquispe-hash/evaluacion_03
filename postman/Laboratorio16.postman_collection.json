@@ -1,0 +1,175 @@
+﻿{
+    "info":  {
+                 "name":  "Laboratorio 16 - Gestión de eventos",
+                 "description":  "Flujo de aceptación: evento, asistente, inscripción y validación fallida.",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "variable":  [
+                     {
+                         "key":  "baseUrl",
+                         "value":  "http://localhost:8080"
+                     },
+                     {
+                         "key":  "eventId",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "attendeeId",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "registrationId",
+                         "value":  ""
+                     }
+                 ],
+    "item":  [
+                 {
+                     "name":  "1. Crear evento - exitoso",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\n  \"nombre\": \"Feria tecnológica 2026\",\n  \"lugar\": \"Auditorio principal\",\n  \"fecha\": \"2026-12-10T09:00:00\",\n  \"capacidad\": 100,\n  \"estado\": \"ACTIVO\"\n}"
+                                              },
+                                     "url":  "{{baseUrl}}/api/eventos"
+                                 },
+                     "event":  [
+                                   {
+                                       "listen":  "test",
+                                       "script":  {
+                                                      "exec":  [
+                                                                   "pm.test(\u0027Creación de evento responde 201\u0027, () =\u003e pm.response.to.have.status(201));",
+                                                                   "const body = pm.response.json();",
+                                                                   "pm.collectionVariables.set(\u0027eventId\u0027, body.id);"
+                                                               ]
+                                                  }
+                                   }
+                               ]
+                 },
+                 {
+                     "name":  "2. Crear asistente - exitoso",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\n  \"nombres\": \"Ana Pérez\",\n  \"correo\": \"ana.perez@example.com\",\n  \"telefono\": \"999888777\"\n}"
+                                              },
+                                     "url":  "{{baseUrl}}/api/asistentes"
+                                 },
+                     "event":  [
+                                   {
+                                       "listen":  "test",
+                                       "script":  {
+                                                      "exec":  [
+                                                                   "pm.test(\u0027Creación de asistente responde 201\u0027, () =\u003e pm.response.to.have.status(201));",
+                                                                   "const body = pm.response.json();",
+                                                                   "pm.collectionVariables.set(\u0027attendeeId\u0027, body.id);"
+                                                               ]
+                                                  }
+                                   }
+                               ]
+                 },
+                 {
+                     "name":  "3. Crear inscripción - exitoso",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\n  \"idEvento\": {{eventId}},\n  \"idAsistente\": {{attendeeId}},\n  \"fecha\": \"2026-11-03T10:00:00\",\n  \"estado\": \"INSCRITA\"\n}"
+                                              },
+                                     "url":  "{{baseUrl}}/api/inscripciones"
+                                 },
+                     "event":  [
+                                   {
+                                       "listen":  "test",
+                                       "script":  {
+                                                      "exec":  [
+                                                                   "pm.test(\u0027Creación de inscripción responde 201\u0027, () =\u003e pm.response.to.have.status(201));",
+                                                                   "const body = pm.response.json();",
+                                                                   "pm.collectionVariables.set(\u0027registrationId\u0027, body.id);"
+                                                               ]
+                                                  }
+                                   }
+                               ]
+                 },
+                 {
+                     "name":  "4. Evento inválido - capacidad cero",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\n  \"nombre\": \"Evento inválido\",\n  \"lugar\": \"Sala 1\",\n  \"fecha\": \"2026-12-11T12:00:00\",\n  \"capacidad\": 0,\n  \"estado\": \"ACTIVO\"\n}"
+                                              },
+                                     "url":  "{{baseUrl}}/api/eventos"
+                                 },
+                     "event":  [
+                                   {
+                                       "listen":  "test",
+                                       "script":  {
+                                                      "exec":  [
+                                                                   "pm.test(\u0027Capacidad inválida responde 400\u0027, () =\u003e pm.response.to.have.status(400));"
+                                                               ]
+                                                  }
+                                   }
+                               ]
+                 },
+                 {
+                     "name":  "5. Consultar eventos",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  "{{baseUrl}}/api/eventos"
+                                 }
+                 },
+                 {
+                     "name":  "6. Inscripción con asistente inexistente - error",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\n  \"idEvento\": {{eventId}},\n  \"idAsistente\": 999999,\n  \"fecha\": \"2026-11-03T10:00:00\",\n  \"estado\": \"INSCRITA\"\n}"
+                                              },
+                                     "url":  "{{baseUrl}}/api/inscripciones"
+                                 },
+                     "event":  [
+                                   {
+                                       "listen":  "test",
+                                       "script":  {
+                                                      "exec":  [
+                                                                   "pm.test(\u0027Referencia inválida responde 400\u0027, () =\u003e pm.response.to.have.status(400));"
+                                                               ]
+                                                  }
+                                   }
+                               ]
+                 }
+             ]
+}

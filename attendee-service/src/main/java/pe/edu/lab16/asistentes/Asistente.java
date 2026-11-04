@@ -1,0 +1,3 @@
+package pe.edu.lab16.asistentes;
+import jakarta.persistence.*;
+@Entity @Table(name="asistentes") public class Asistente{@Id @GeneratedValue(strategy=GenerationType.IDENTITY)private Long id;@Column(nullable=false,length=120)private String nombres;@Column(nullable=false,unique=true,length=160)private String correo;@Column(length=30)private String telefono;public Long getId(){return id;}public void setId(Long v){id=v;}public String getNombres(){return nombres;}public void setNombres(String v){nombres=v;}public String getCorreo(){return correo;}public void setCorreo(String v){correo=v;}public String getTelefono(){return telefono;}public void setTelefono(String v){telefono=v;}}

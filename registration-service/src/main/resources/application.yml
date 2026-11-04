@@ -1,0 +1,5 @@
+﻿spring:
+  application:
+    name: registration-service
+  profiles:
+    active: dev

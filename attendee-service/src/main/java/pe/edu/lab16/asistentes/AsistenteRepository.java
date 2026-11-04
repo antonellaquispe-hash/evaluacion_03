@@ -1,0 +1,1 @@
+package pe.edu.lab16.asistentes;import org.springframework.data.jpa.repository.JpaRepository;public interface AsistenteRepository extends JpaRepository<Asistente,Long>{boolean existsByCorreo(String correo);}

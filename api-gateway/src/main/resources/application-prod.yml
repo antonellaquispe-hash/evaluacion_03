@@ -1,0 +1,22 @@
+﻿server:
+  port: ${SERVER_PORT:8080}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: eventos
+          uri: lb://event-service
+          predicates: [Path=/api/eventos/**]
+          filters: [StripPrefix=1]
+        - id: asistentes
+          uri: lb://attendee-service
+          predicates: [Path=/api/asistentes/**]
+          filters: [StripPrefix=1]
+        - id: inscripciones
+          uri: lb://registration-service
+          predicates: [Path=/api/inscripciones/**]
+          filters: [StripPrefix=1]

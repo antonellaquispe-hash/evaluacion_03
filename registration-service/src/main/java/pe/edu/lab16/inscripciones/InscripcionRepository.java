@@ -1,0 +1,1 @@
+package pe.edu.lab16.inscripciones;import org.springframework.data.jpa.repository.JpaRepository;public interface InscripcionRepository extends JpaRepository<Inscripcion,Long>{boolean existsByIdEventoAndIdAsistente(Long idEvento,Long idAsistente);long countByIdEventoAndEstado(Long idEvento,String estado);}
